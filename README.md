@@ -1,6 +1,54 @@
-# Pandoc book template
+# DIQKD Thesis
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wikiti/pandoc-book-template/blob/master/LICENSE.md)
+https://www.overleaf.com/project/6225e87cfde1be655696e8f4
+
+# \input{chapters/introduction}
+# \input{chapters/methods}
+# \input{chapters/results}
+
+
+resents observations in a logical and coherent
+manner; use illustrations, graphs, tables to
+document
+
+
+Provide a description of your observations
+• Organize in a logical way and introduce briefly what the
+section/paragraph is about
+• Describe and illustrate main observations; additional details
+can go into appendices/suppl. Material
+• Qualitative or quantitative
+• Statistical analysis
+• Graphical representations
+• Do not interpret/discuss data unless absolutely necessary for a
+logical flow of thought (but check with your supervisor about
+preferences/customs in the lab).
+
+Do not repeat methods in results!
+Write results as results; what is the parameter you observe
+
+
+Example: better
+In order to visualize the development of connectivity in the developing brain,
+all tracing methods had to be developed, aiming to determine optimal
+injection and survival parameters as well as establishing surgical procedures
+and stereotaxic coordinates. Relevant for this study is that we ascertained
+that successful tracing with anterograde and retrograde tracing is feasible in
+pups, starting at postnatal day 0 (P0) and that a survival time between 20-24
+hours yields sufficient transport of injected tracers to label all central
+projections, i.e. those restricted to the fore- and midbrain. This is illustrated
+when comparing the pattern of labeling seen following a retrograde injection
+in area X at Px with a survival period of 20 hours with that of an animal
+injected with the same tracer, in the same area but now with a survival time
+of 24 or 48 hours. From this we concluded that using a survival time
+between 20- 24 hours is sufficient to provide a reliable overview of
+established connections.
+
+
+# \input{chapters/conclusions}
+# \input{chapters/perspectives}
+
 
 ## Description
 

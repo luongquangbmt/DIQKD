@@ -3,6 +3,34 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wikiti/pandoc-book-template/blob/master/LICENSE.md)
 https://www.overleaf.com/project/6225e87cfde1be655696e8f4
 
+
+
+The objective of this project is to build a Quantum Computing simulator in Maxima with the following characteristics:
+
+Ability to generate general quantum circuits by specifying parameters, for example the number of qubits, a natural number, the size of a set, etc.
+
+
+Ability to integrate data into the quantum gates of the circuit (wire the data), with the aim of reducing the number of required qubits.
+
+
+Use of general quantum gates (generalized Toffoli, etc) to facilitate algorithm coding.
+
+
+Automatic optimization of quantum circuits.
+
+
+Simulation of errors during the execution of quantum algorithms.
+
+
+Visualization of the quantum state at intermediate points in the execution of algorithms.
+
+
+Use of classical calculations, for example for conditional management, during quantum computing in order to reduce the number of required qubits.
+
+The simulator will be integrated into Maxima as a library for use as free software.
+
+
+
 # \input{chapters/introduction}
 # \input{chapters/methods}
 # \input{chapters/results}

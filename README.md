@@ -13,19 +13,19 @@ The objective of this project is to build a Quantum Computing simulator in Maxim
   
     1. Ability to generate general quantum circuits by specifying parameters, for example the number of qubits, a natural number, the size of a set, etc.
 
-  2 . Ability to integrate data into the quantum gates of the circuit (wire the data), with the aim of reducing the number of required qubits.
+    2. Ability to integrate data into the quantum gates of the circuit (wire the data), with the aim of reducing the number of required qubits.
 
-  3. Use of general quantum gates (generalized Toffoli, etc) to facilitate algorithm coding.
+    3. Use of general quantum gates (generalized Toffoli, etc) to facilitate algorithm coding.
 
-  4. Automatic optimization of quantum circuits.
+    4. Automatic optimization of quantum circuits.
 
-  5. Simulation of errors during the execution of quantum algorithms.
+    5. Simulation of errors during the execution of quantum algorithms.
 
-  6. Visualization of the quantum state at intermediate points in the execution of algorithms.
+    6. Visualization of the quantum state at intermediate points in the execution of algorithms.
 
-  7. Use of classical calculations, for example for conditional management, during quantum computing in order to reduce the number of required qubits.
+    7. Use of classical calculations, for example for conditional management, during quantum computing in order to reduce the number of required qubits.
 
-  8. The simulator will be integrated into Maxima as a library for use as free software.
+    8. The simulator will be integrated into Maxima as a library for use as free software.
 
 
 

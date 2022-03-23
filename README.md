@@ -7,7 +7,11 @@ https://www.overleaf.com/project/6225e87cfde1be655696e8f4
 # Introduction
 The objective of this project is to build a Quantum Computing simulator in Maxima with the following characteristics:
 
-Ability to generate general quantum circuits by specifying parameters, for example the number of qubits, a natural number, the size of a set, etc.
+
+
+1. OpQSDS programming language development.
+
+1. Ability to generate general quantum circuits by specifying parameters, for example the number of qubits, a natural number, the size of a set, etc.
 
 
 Ability to integrate data into the quantum gates of the circuit (wire the data), with the aim of reducing the number of required qubits.
@@ -30,7 +34,6 @@ Use of classical calculations, for example for conditional management, during qu
 The simulator will be integrated into Maxima as a library for use as free software.
 
 
-1. OpQSDS programming language development.
 
 2. Code generation for Qiskit and OpenQASM.
 

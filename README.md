@@ -36,6 +36,9 @@ The objective of this project is to build a Quantum Computing simulator in Maxim
 4. Simulation in OpenQSDS of qubit errors.
 
 5. Implementation in OpenQSDS of QKD protocols.
+    1. Introduction 
+        1.  QKD
+        2.  OpenQSDS
 
 6. Design of quantum codes that correct errors in two qubits.
 

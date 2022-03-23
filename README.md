@@ -30,6 +30,20 @@ Use of classical calculations, for example for conditional management, during qu
 The simulator will be integrated into Maxima as a library for use as free software.
 
 
+1. OpQSDS programming language development.
+
+2. Code generation for Qiskit and OpenQASM.
+
+5. Implementation in OpenQSDS of error-correcting quantum codes.
+
+4. Simulation in OpenQSDS of qubit errors.
+
+5. Implementation in OpenQSDS of QKD protocols.
+
+6. Design of quantum codes that correct errors in two qubits.
+
+
+
 
 
 

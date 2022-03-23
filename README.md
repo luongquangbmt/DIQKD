@@ -39,10 +39,13 @@ The objective of this project is to build a Quantum Computing simulator in Maxim
     1. Introduction 
         1.  QKD
         2.  OpenQSDS
-    2. B88 QKD Protocol
+    2. QKD Protocol (B88)
         1. Protocol Overview
         2. Open QSDS Implementation
-    3. DIQKD Protocol
+    2. Entangled QKD Protocol (Ekert91)
+        1. Protocol Overview
+        2. Open QSDS Implementation
+    3. DIQKD Protocol (Acin07) 
         1. Protocol Overview
         2. Open QSDS Implementation
     4. Risk & Security Analysis

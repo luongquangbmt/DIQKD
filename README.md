@@ -10,10 +10,10 @@ The objective of this project is to build a Quantum Computing simulator in Maxim
 
 
 1. OpQSDS programming language development.
+  
+    1. Ability to generate general quantum circuits by specifying parameters, for example the number of qubits, a natural number, the size of a set, etc.
 
-  1. Ability to generate general quantum circuits by specifying parameters, for example the number of qubits, a natural number, the size of a set, etc.
-
-  2. Ability to integrate data into the quantum gates of the circuit (wire the data), with the aim of reducing the number of required qubits.
+  2 . Ability to integrate data into the quantum gates of the circuit (wire the data), with the aim of reducing the number of required qubits.
 
   3. Use of general quantum gates (generalized Toffoli, etc) to facilitate algorithm coding.
 

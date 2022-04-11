@@ -1,0 +1,1185 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.06.6 ] */
+/* [wxMaxima: section start ]
+Scalar product
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Scalar product of two complex vectors
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+scalar_prod(u,v) := expand(conjugate(u).v)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Tensor product
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Tensor product of two matrices
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tensor_prod(M1,M2) := block([Size, r1, c1, r2, c2, r, c, M, j],
+    Size : matrix_size(M1),
+    r1 : Size[1],
+    c1 : Size[2],
+    Size : matrix_size(M2),
+    r2 : Size[1],
+    c2 : Size[2],
+    r : r1*r2,
+    c : c1*c2,
+    M : zeromatrix(r,c),
+    for j from 1 thru r do block([k],
+        for k from 1 thru c do 
+            M[j,k] : M1[1 + floor((j - 1)/r2), 1 + floor((k - 1)/c2)]*
+                       M2[1 + mod(j - 1, r2), 1 + mod(k - 1, c2)]
+    ),
+    M
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Quantum computing module
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Initialization of n_qubit 
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Initialize the n-qubit, putting it in the state |0>, resets the variables max_error_n_qubit, max_error_gate, max_error_prob, system_error, graphic_list and graphic_in_sesion and initialize the random generator
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+initialize_n_qubit() := block(
+    n_qubit[0,0] : float(1),
+    n_qubit[0,1] : float(0),
+    for k from 1 thru last_base_vector do block(
+        n_qubit[k,0] : float(0),
+        n_qubit[k,1] : float(0)
+    ),
+    max_error_n_qubit : float(0),
+    max_error_gates : float(0),
+    max_error_prob : float(0),
+    system_error : "none",
+    graphic_list : [],
+    graphic_in_sesion : true,
+    set_random_state(make_random_state(true)),
+    "done"
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+N-qubit norm check
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Calculate the error of the n_qubit and update max_error_n_qubit
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+check_n_qubit() :=  block([norm, k, x],
+    norm : float(0),
+    for k from 0 thru last_base_vector do
+        norm : norm + n_qubit[k,0]*n_qubit[k,0] + n_qubit[k,1]*n_qubit[k,1],
+    x : abs(float(1)-norm),
+    if x > max_error_n_qubit then max_error_n_qubit : x,
+    norm
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+One-qubit quantum gates
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Definition of 1-qubit quantum gates
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_H : matrix([float(1)/sqrt(float(2)), float(1)/sqrt(float(2))],
+                        [float(1)/sqrt(float(2)), float(-1)/sqrt(float(2))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_I : matrix([float(1), float(0)],
+                        [float(0), float(1)])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_X : matrix([float(0), float(1)],
+                        [float(1), float(0)])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_Y : matrix([float(0), %i*float(-1)],
+                        [%i*float(1), float(0)])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_Z : matrix([float(1), float(0)],
+                        [float(0), float(-1)])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_S : matrix([float(1), float(0)],
+                        [float(0), %i*float(1)])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_T : matrix([float(1), float(0)],
+                        [float(0), float(1)/sqrt(float(2))+%i*(float(1)/sqrt(float(2)))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_R(k) := matrix([float(1), float(0)],
+                        [float(0), float(exp(%i*%pi/2^(k-1)))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_P(φ) := matrix([float(1), float(0)],
+                        [float(0), float(exp(%i*φ))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_Ry(θ) := matrix([float(cos(θ/2)), float(sin(θ/2))],
+                        [float(-sin(θ/2)), float(cos(θ/2))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_Rz(α) := matrix([float(exp(%i*α/2)), float(0)],
+                        [float(0), float(exp(%i*α/2))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_Ph(δ) := matrix([float(exp(%i*δ)), float(0)],
+                        [float(0), float(exp(%i*δ))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_Error(θ0,θ1,θ2) := matrix([float(cos(θ0)+%i*sin(θ0)*cos(θ1)), float(-sin(θ0)*sin(θ1)*cos(θ2)+%i*sin(θ0)*sin(θ1)*sin(θ2))],
+                        [float(sin(θ0)*sin(θ1)*cos(θ2)+%i*sin(θ0)*sin(θ1)*sin(θ2)), float(cos(θ0)-%i*sin(θ0)*cos(θ1))])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Two-qubit quantum gates
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Definition of 2-qubit quantum gates
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gate_swap : matrix([float(1), float(0), float(0), float(0)],
+                              [float(0), float(0), float(1), float(0)],
+                              [float(0), float(1), float(0), float(0)],
+                              [float(0), float(0), float(0), float(1)])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Quantum gate unitary check
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+One-qubit quantum gates
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+check_1_qubit_gate(M1) := block([M2, j, k, x, y, w, err],
+    err : float(0),
+    M2 : M1.conjugate(traspose(M1)),
+    for j from 1 thru 2 do block(
+        for k from 1 thru 2 do block(
+            if j=k then x : float(1)-realpart(M2[j,k]) else x : realpart(M2[j,k]),
+            y : imagpart(M2[j,k]),
+            w : sqrt(x*x + y*y),
+            if err < w then err : w
+        )
+    ),
+    if max_error_gates < err then max_error_gates : err,
+    err
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two-qubit quantum gates
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+check_2_qubit_gate(M1) := block([M2, j, k, x, y, w, err],
+    err : float(0),
+    M2 : M1.conjugate(traspose(M1)),
+    for j from 1 thru 4 do block(
+        for k from 1 thru 4 do block(
+            if j=k then x : float(1)-realpart(M2[j,k]) else x : realpart(M2[j,k]),
+            y : imagpart(M2[j,k]),
+            w : sqrt(x*x + y*y),
+            if err < w then err : w
+        )
+    ),
+    if max_error_gates < err then max_error_gates : err,
+    err
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Construction of next_base_vector iterator to apply quantum gates/measurements
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Initialize the base vector (qubit_list) and the mask (mask_list) for the qubits of the quantum gate
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+initialize_qubit_list() := block([k],
+    for k from 1 thru num_qubits do qubit_list[k] : 0,
+    "done"
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+initialize_mask_list() := block([k],
+    for k from 1 thru num_qubits do mask_list[k] : 1,
+    "done"
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Calculate the following base vector (until the function returns false)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+next_base_vector() := block([k, k0, result],
+    k0 : num_qubits,
+    while k0 > 0 and (mask_list[k0] = 0 or qubit_list[k0] = 1) do k0 : k0-1,
+    if k0 > 0 then block(
+        qubit_list[k0] : 1,
+        for k from k0+1 thru num_qubits do qubit_list[k] : 0,
+        result : true
+    )
+    else result : false,
+    result
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Convert the base vector qubit_list into the index of the n_qubit array
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+n_qubit_index() := block([k,j],
+    k : 0,
+    for j from 1 thru num_qubits do k : k + qubit_list[j]*2^(num_qubits-j),
+    k
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Convert list R into an index
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list_to_index(R) := block([k, j, n],
+    n : length(R),
+    k : 0,
+    for j from 1 thru n do k : k + R[j]*2^(n-j),
+    k
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Convert the index of the n_qubit array into the base vector qubit_list
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+n_qubit_list(k) := block([j, x], 
+    for j from 1 thru num_qubits do block(
+        x : mod(k,2),
+        qubit_list[num_qubits-j+1] : x,
+        k : (k-x)/2
+    ),
+    qubit_list
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Convert index k into the list R
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+index_to_list(R,k) := block([j, n, x],
+    n : length(R),
+    for j from 1 thru n do block(
+        x : mod(k,2),
+        R[n-j+1] : x,
+        k : (k-x)/2
+    ),
+    R
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Start Simulator
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Assign values to global variables num_qubits, dim_n_qubit and last_base_vector (depending on the
+number of qubits n entered as a parameter), build the variables n-qubit, qubit_list and mask_list
+(necessary for the application of quantum gates and quantum measurements) and initialize the n-qubit, the variables max_error_n_qubit, max_error_gates, max_error_prob, system_error, graphic_list and graphic_in_sesion and initialize the random generator
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+start_simulator(n) := block([k],
+    num_qubits : n,
+    dim_n_qubit : 2^num_qubits,
+    last_base_vector : dim_n_qubit-1,
+    n_qubit : make_array(flonum, dim_n_qubit, 2),
+    n_qubit[0,0] : float(1),
+    n_qubit[0,1] : float(0),
+    for k from 1 thru last_base_vector do block(
+        n_qubit[k,0] : float(0),
+        n_qubit[k,1] : float(0)
+    ),
+    qubit_list : create_list(0, k, 1, num_qubits),
+    mask_list : create_list(1, k, 1, num_qubits),
+    max_error_n_qubit : float(0),
+    max_error_gates : float(0),
+    max_error_prob : float(0),
+    system_error : "none",
+    graphic_list : [],
+    graphic_in_sesion : true,
+    set_random_state(make_random_state(true)),
+    "done"
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Summary
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+summary() := block(
+    sprint(" "),
+    newline(),
+    sprint(sconcat("num_qubits = ",string(num_qubits))),  
+    newline(),
+    sprint(sconcat("dim_n_qubit = ",string(dim_n_qubit))),
+    newline(),
+    sprint(sconcat("max_error_n_qubit = ",string(max_error_n_qubit))),
+    newline(),
+    sprint(sconcat("max_error_prob = ",string(max_error_prob))),
+    newline(),
+    sconcat("max_error_gates = ",string(max_error_gates))
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Application of a one-qubit quantum gate
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Check the list of qubits over which a quantum gate is defined
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+check_gate_qubit_list(L) := block([j, k, len, sol],
+    sol : true,
+    len : length(L),
+    for j from 1 thru len do if L[j] < 1 or L[j] > num_qubits then sol : false,
+    if len > 1 then
+        for j from 1 thru len-1 do
+            for k from j+1 thru len do
+                if L[j] = L[k] then sol : false,
+    sol
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The one-qubit quantum gate G is applied to qubit j
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_1_qubit_gate(G,j) := block([ψ_in, ψ_out, k0, k1, k1_offset, res], 
+  if check_gate_qubit_list([j]) then (
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    mask_list[j] : 0,
+    k1_offset : 2^(num_qubits-j),
+    k0 : n_qubit_index(),
+    k1 : k0 + k1_offset,
+    ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+    ψ_out : expand(G.ψ_in),
+    n_qubit[k0,0] : realpart(ψ_out[1,1]),
+    n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+    n_qubit[k1,0] : realpart(ψ_out[2,1]),
+    n_qubit[k1,1] : imagpart(ψ_out[2,1]),
+    while next_base_vector() do block(
+        k0 : n_qubit_index(),
+        k1 : k0 + k1_offset,
+        ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+        ψ_out : expand(G.ψ_in),
+        n_qubit[k0,0] : realpart(ψ_out[1,1]),
+        n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+        n_qubit[k1,0] : realpart(ψ_out[2,1]),
+        n_qubit[k1,1] : imagpart(ψ_out[2,1])
+    ),
+    check_n_qubit(),
+    res : "done"
+  )
+  else res : "apply_1_qubit_gate: index j out of range",
+  res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Application of a controlled one-qubit quantum gate
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The one-qubit quantum gate G is applied to qubit j if qubit j0 is in state |1>
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_1_controlled_1_qubit_gate(G,j0,j) := block([ψ_in, ψ_out, k0, k1, k0_offset, k1_offset, res], 
+  if check_gate_qubit_list([j0,j]) then (  
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    mask_list[j0] : 0,
+    mask_list[j] : 0,
+    k0_offset : 2^(num_qubits-j0),
+    k1_offset : 2^(num_qubits-j),
+    k0 : n_qubit_index() + k0_offset,
+    k1 : k0 + k1_offset,
+    ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+    ψ_out : expand(G.ψ_in),
+    n_qubit[k0,0] : realpart(ψ_out[1,1]),
+    n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+    n_qubit[k1,0] : realpart(ψ_out[2,1]),
+    n_qubit[k1,1] : imagpart(ψ_out[2,1]),
+    while next_base_vector() do block(
+        k0 : n_qubit_index() + k0_offset,
+        k1 : k0 + k1_offset,
+        ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+        ψ_out : expand(G.ψ_in),
+        n_qubit[k0,0] : realpart(ψ_out[1,1]),
+        n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+        n_qubit[k1,0] : realpart(ψ_out[2,1]),
+        n_qubit[k1,1] : imagpart(ψ_out[2,1])
+    ), 
+    check_n_qubit(),
+    res : "done"
+  )
+  else res : "apply_1_controlled_1_qubit_gate: indices j0 and j out of range or not distinct",
+  res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Application of a two-controlled one-qubit quantum gate
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The one-qubit quantum gate G is applied to qubit j if qubits j0 and j1 are in state |1>
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_2_controlled_1_qubit_gate(G,j0,j1,j) := block([ψ_in, ψ_out, k0, k1, k0_offset, k1_offset, res], 
+  if check_gate_qubit_list([j0,j1,j]) then (  
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    mask_list[j0] : 0,
+    mask_list[j1] : 0,
+    mask_list[j] : 0,
+    k0_offset : 2^(num_qubits-j0) + 2^(num_qubits-j1),
+    k1_offset : 2^(num_qubits-j),
+    k0 : n_qubit_index() + k0_offset,
+    k1 : k0 + k1_offset,
+    ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+    ψ_out : expand(G.ψ_in),
+    n_qubit[k0,0] : realpart(ψ_out[1,1]),
+    n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+    n_qubit[k1,0] : realpart(ψ_out[2,1]),
+    n_qubit[k1,1] : imagpart(ψ_out[2,1]),
+    while next_base_vector() do block(
+        k0 : n_qubit_index() + k0_offset,
+        k1 : k0 + k1_offset,
+        ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+        ψ_out : expand(G.ψ_in),
+        n_qubit[k0,0] : realpart(ψ_out[1,1]),
+        n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+        n_qubit[k1,0] : realpart(ψ_out[2,1]),
+        n_qubit[k1,1] : imagpart(ψ_out[2,1])
+    ),
+    check_n_qubit(),
+    res : "done"
+  )
+  else res : "apply_2_controlled_1_qubit_gate: indices j0, j1 and j out of range or not distinct",
+  res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Application of a k controlled qubit quantum gate
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The one-qubit quantum gate G is applied to qubit j if qubits L[1], L[2], ... are in state |1>
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_k_controlled_1_qubit_gate(G,L,j) := block([ψ_in, ψ_out, k, len, k0, k1, k0_offset, k1_offset, res], 
+  if check_gate_qubit_list(append(L,[j])) then (  
+    len : length(L),
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    for k from 1 thru len do mask_list[L[k]] : 0,
+    mask_list[j] : 0,
+    k0_offset : 0,
+    for k from 1 thru len do k0_offset : k0_offset + 2^(num_qubits-L[k]),
+    k1_offset : 2^(num_qubits-j),
+    k0 : n_qubit_index() + k0_offset,
+    k1 : k0 + k1_offset,
+    ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+    ψ_out : expand(G.ψ_in),
+    n_qubit[k0,0] : realpart(ψ_out[1,1]),
+    n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+    n_qubit[k1,0] : realpart(ψ_out[2,1]),
+    n_qubit[k1,1] : imagpart(ψ_out[2,1]),
+    while next_base_vector() do block(
+        k0 : n_qubit_index() + k0_offset,
+        k1 : k0 + k1_offset,
+        ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]]),
+        ψ_out : expand(G.ψ_in),
+        n_qubit[k0,0] : realpart(ψ_out[1,1]),
+        n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+        n_qubit[k1,0] : realpart(ψ_out[2,1]),
+        n_qubit[k1,1] : imagpart(ψ_out[2,1])
+    ),
+    check_n_qubit(),
+    res : "done"
+  )
+  else res : "apply_k_controlled_1_qubit_gate: indices out of range or not distinct",
+  res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Application of a two-qubit quantum gate
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The two-qubit quantum gate G is applied to qubits j1 and j2
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_2_qubit_gate(G,j1,j2) := block([ψ_in, ψ_out, k0, k1, k2, k3, k1_offset, k2_offset, k3_offset, res], 
+  if check_gate_qubit_list([j1,j2]) then (  
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    mask_list[j1] : 0,
+    mask_list[j2] : 0,
+    k1_offset : 2^(num_qubits-j2),
+    k2_offset : 2^(num_qubits-j1),
+    k3_offset : 2^(num_qubits-j1) + 2^(num_qubits-j2),
+    k0 : n_qubit_index(),
+    k1 : k0 + k1_offset,
+    k2 : k0 + k2_offset,
+    k3 : k0 + k3_offset,
+    ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]],
+                        [n_qubit[k2,0] + %i*n_qubit[k2,1]],  [n_qubit[k3,0] + %i*n_qubit[k3,1]]),
+    ψ_out : expand(G.ψ_in),
+    n_qubit[k0,0] : realpart(ψ_out[1,1]),
+    n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+    n_qubit[k1,0] : realpart(ψ_out[2,1]),
+    n_qubit[k1,1] : imagpart(ψ_out[2,1]),
+    n_qubit[k2,0] : realpart(ψ_out[3,1]),
+    n_qubit[k2,1] : imagpart(ψ_out[3,1]),
+    n_qubit[k3,0] : realpart(ψ_out[4,1]),
+    n_qubit[k3,1] : imagpart(ψ_out[4,1]),
+    while next_base_vector() do block(
+        k0 : n_qubit_index(),
+        k1 : k0 + k1_offset,
+        k2 : k0 + k2_offset,
+        k3 : k0 + k3_offset,
+        ψ_in : matrix([n_qubit[k0,0] + %i*n_qubit[k0,1]], [n_qubit[k1,0] + %i*n_qubit[k1,1]],
+                            [n_qubit[k2,0] + %i*n_qubit[k2,1]],  [n_qubit[k3,0] + %i*n_qubit[k3,1]]),
+        ψ_out : expand(G.ψ_in),
+        n_qubit[k0,0] : realpart(ψ_out[1,1]),
+        n_qubit[k0,1] : imagpart(ψ_out[1,1]),
+        n_qubit[k1,0] : realpart(ψ_out[2,1]),
+        n_qubit[k1,1] : imagpart(ψ_out[2,1]),
+        n_qubit[k2,0] : realpart(ψ_out[3,1]),
+        n_qubit[k2,1] : imagpart(ψ_out[3,1]),
+        n_qubit[k3,0] : realpart(ψ_out[4,1]),
+        n_qubit[k3,1] : imagpart(ψ_out[4,1])
+    ), 
+    check_n_qubit(),
+    res : "done"
+  )
+  else res : "apply_2_qubit_gate: indices j1 and j2 out of range or not distinct",
+  res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Application of qubit measures
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The one-qubit measure is applied to qubit j
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_1_qubit_measure(j) := block([p0, p1, k0, k1, k1_offset, x, res, final_res],
+  if check_gate_qubit_list([j]) then (  
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    mask_list[j] : 0,
+    k1_offset : 2^(num_qubits-j),
+    k0 : n_qubit_index(),
+    k1 : k0 + k1_offset,
+    p0 : n_qubit[k0,0]*n_qubit[k0,0]+n_qubit[k0,1]*n_qubit[k0,1],
+    p1 : n_qubit[k1,0]*n_qubit[k1,0]+n_qubit[k1,1]*n_qubit[k1,1],
+    while next_base_vector() do block(
+        k0 : n_qubit_index(),
+        k1 : k0 + k1_offset,
+        p0 : p0 + n_qubit[k0,0]*n_qubit[k0,0]+n_qubit[k0,1]*n_qubit[k0,1],
+        p1 : p1 + n_qubit[k1,0]*n_qubit[k1,0]+n_qubit[k1,1]*n_qubit[k1,1]
+    ),
+    x : random(1.0),
+    if x < p0 then res : 0 else res : 1,
+    if res = 0 then x : float(1)/sqrt(p0) else x : float(1)/sqrt(p1),
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    mask_list[j] : 0,
+    k0 : n_qubit_index(),
+    k1 : k0 + k1_offset,
+    if res = 0 then block(
+        n_qubit[k0,0] : x*n_qubit[k0,0],
+        n_qubit[k0,1] : x*n_qubit[k0,1],
+        n_qubit[k1,0] : float(0),
+        n_qubit[k1,1] : float(0)
+    )
+    else block(
+        n_qubit[k0,0] : float(0),
+        n_qubit[k0,1] : float(0),
+        n_qubit[k1,0] : x*n_qubit[k1,0],
+        n_qubit[k1,1] : x*n_qubit[k1,1]
+    ),
+    while next_base_vector() do block(
+        k0 : n_qubit_index(),
+        k1 : k0 + k1_offset,
+        if res = 0 then block(
+            n_qubit[k0,0] : x*n_qubit[k0,0],
+            n_qubit[k0,1] : x*n_qubit[k0,1],
+            n_qubit[k1,0] : float(0),
+            n_qubit[k1,1] : float(0)
+        )
+        else block(
+            n_qubit[k0,0] : float(0),
+            n_qubit[k0,1] : float(0),
+            n_qubit[k1,0] : x*n_qubit[k1,0],
+            n_qubit[k1,1] : x*n_qubit[k1,1])
+    ),
+    check_n_qubit(),
+    x : abs(float(1)-p0-p1),
+    if max_error_prob < x then max_error_prob : x,  
+    final_res : [p0,p1,res]
+  )
+  else final_res : "apply_1_qubit_measure: index j out of range",
+  final_res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+All qubits of the register j0 ... j1 are measured. Returns the list [[b_1, b_2, ..., b_k], res] where the first element is the list of bits resulting from the measurements (k = j1-j0+1) and res is the integer with binary representation b_1b_2...b_k.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+apply_reg_measure(j0,j1) := block([reg_len, res_1, res_2, k, x, index, final_res],
+  if j0 < j1 and check_gate_qubit_list([j0,j1]) then (  
+    reg_len : j1-j0+1,
+    res_1 : create_list(0,k,1,reg_len),
+    for k from j0 thru j1 do block(
+        x : apply_1_qubit_measure(k),
+        res_1[k-j0+1] : x[3]
+    ),
+    res_2 : 0,
+    for k from 1 thru reg_len do res_2 : res_2 + res_1[k]*2^(reg_len-k),
+    final_res : [res_1,res_2]
+  )
+  else final_res : "apply_reg_measure: index j0 >= j1 or indices j0 and j1 out of range",
+  final_res    
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Walsh-Hadamard transformation
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Apply the Walsh-Hadamard transformation to register j0...j1.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+WH_transformation(j0,j1) := block([k, res],
+  if j0 < j1 and check_gate_qubit_list([j0,j1]) then (  
+    for k from j0 thru j1 do apply_1_qubit_gate(gate_H,k),
+    res : "done" 
+  )
+  else res : "WH_transformation: index j0 >= j1 or indices j0 and j1 out of range",
+  res    
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Quantum Fourier transformation
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Apply the Quantum Fourier transformation to register j0...j1.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+QF_transformation(j0,j1) := block([j, k, x, res],
+  if j0 < j1 and check_gate_qubit_list([j0,j1]) then (   
+    for j from j0 thru j1-1 do (
+        apply_1_qubit_gate(gate_H,j),
+        for k from j+1 thru j1 do apply_1_controlled_1_qubit_gate(gate_R(k-j+1),k,j)
+    ),
+    apply_1_qubit_gate(gate_H,j1),
+    if mod(j0+j1,2) = 0 then k : (j1+j0-2)/2 else k : (j1+j0-1)/2,
+    for j from j0 thru k do apply_2_qubit_gate(gate_swap,j,j1-(j-j0)),
+    res : "done" 
+  )
+  else res : "QF_transformation: index j0 >= j1 or indices j0 and j1 out of range",
+  res    
+)$ 
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Graphics of probabilities and coefficients
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Function to display the name (name or number) graphical representation
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_graphics(name) := block([k, n],
+    n : length(graphic_list),
+    if stringp(name) then (
+        k : 1,
+        while (k <= n) and not (graphic_list[k][1] = name) do k : k + 1,
+        if k>n then system_error : sconcat("error: graphic ", name, " not found")
+        else (draw(terminal=[wxt,k],graphic_list[k][2]),
+                system_error : "done")
+        )
+    elseif integerp(name) then (
+        if (name < 1) or (name > n) then system_error : sconcat("error: graphic ", name, " not found")
+        else (draw(terminal=[wxt,name],graphic_list[name][2]),
+                system_error : "done")
+    ),
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Bar diagram of the probability distribution (maximum 8 qubits - 256 bars)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_prob(name) := block(
+    if num_qubits < 9 then bock([balken, i, x, y, sum_prob],
+        sum_prob : float(0),
+        x : float(0), 
+        for i from 0 thru last_base_vector do block(
+            y : n_qubit[i,0]*n_qubit[i,0]+n_qubit[i,1]*n_qubit[i,1],
+            sum_prob : sum_prob + y,
+            if x < y then x : y
+        ),
+        y : abs(float(1)-sum_prob),
+        if max_error_prob < y then max_error_prob : y,
+        balken : create_list(rectangle([i,0],[i+1,n_qubit[i,0]*n_qubit[i,0]+n_qubit[i,1]*n_qubit[i,1]]), i, 0, last_base_vector),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[0,dim_n_qubit],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken)]]),
+        i : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[0,dim_n_qubit],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken)
+        else
+        draw2d(terminal=[wxt,i],xrange=[0,dim_n_qubit],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken),
+        system_error : "error: none"
+    )
+    else system_error : "error: no more than 8 qubits can be graphically represented",
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Bar diagram of the register j0...j1 probability distribution (maximum 8 qubits - 256 bars)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_reg_prob(name,j0,j1) := block(
+    if 1 <= j0 and j0 <= j1 and j1 <= num_qubits and j1-j0 < 8 then bock([res_len, res_dim, last_res, two_power, balken, i, j, k, L, x, y, sum_prob],
+        res_len : j1-j0+1,
+        res_dim : 2^res_len,
+        last_res : res_dim - 1,
+        two_power : 2^(num_qubits-j1),
+        L : makelist(float(0),k,1,res_dim),
+        sum_prob : float(0),
+        x : float(0), 
+        for j from 0 thru last_res do block(
+            i : j*two_power,
+            initialize_qubit_list(),
+            initialize_mask_list(),
+            for k from j0 thru j1 do mask_list[k] : 0,
+            k : i + n_qubit_index(),
+            y : n_qubit[k,0]*n_qubit[k,0]+n_qubit[k,1]*n_qubit[k,1],
+            while next_base_vector() do block(
+                k : i + n_qubit_index(),
+                y : y + n_qubit[k,0]*n_qubit[k,0]+n_qubit[k,1]*n_qubit[k,1]
+            ),
+            L[j+1] : y,
+            sum_prob : sum_prob + y,
+            if x < y then x : y
+        ),
+        y : abs(float(1)-sum_prob),
+        if max_error_prob < y then max_error_prob : y,
+        balken : create_list(rectangle([j,0],[j+1,L[j+1]]), j, 0, last_res),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[0,res_dim],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken)]]),
+        i : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[0,res_dim],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken)
+        else
+        draw2d(terminal=[wxt,i],xrange=[0,res_dim],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken),
+        system_error : "error: none"
+    )
+    else system_error : "error: no more than 8 qubits can be graphically represented",
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Calculate the probability of |z> in the register j0...j1
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+calculate_reg_prob(z,j0,j1) := block([two_power, i, j, k, y],
+    two_power : 2^(num_qubits-j1),
+    i : z*two_power,
+    initialize_qubit_list(),
+    initialize_mask_list(),
+    for k from j0 thru j1 do mask_list[k] : 0,
+    k : i + n_qubit_index(),
+    y : n_qubit[k,0]*n_qubit[k,0]+n_qubit[k,1]*n_qubit[k,1],
+    while next_base_vector() do block(
+        k : i + n_qubit_index(),
+        y : y + n_qubit[k,0]*n_qubit[k,0]+n_qubit[k,1]*n_qubit[k,1]
+    ),
+    y
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Bar diagram of the sublist |j0>...|j1> (j1 - j0 <= 256 bars)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_list_prob(name,j0,j1) := block(
+    if 0 <= j0 and j0 <= j1 and j1 <= last_base_vector and j1-j0 < 257 then bock([balken, j, x, y],
+        x : float(0), 
+        for j from j0 thru j1 do block(
+            y : n_qubit[j,0]*n_qubit[j,0]+n_qubit[j,1]*n_qubit[j,1],
+            if x < y then x : y
+        ),
+        balken : create_list(rectangle([j,0],[j+1,n_qubit[j,0]*n_qubit[j,0]+n_qubit[j,1]*n_qubit[j,1]]), j, j0, j1),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[j0,j1+1],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken)]]),
+        j : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[j0,j1+1],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken)
+        else
+        draw2d(terminal=[wxt,j],xrange=[j0,j1+1],yrange=[0,1.1*x],color=black,fill_color=gray60,line_type=solid,border=true,balken),
+        system_error : "error: none"
+    )
+    else system_error : "error: no more than 256 bars can be graphically represented",
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Bar diagram of the j biggest probabilities (j1 <= 32)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gap_prob : 0.0000001$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_biggest_prob(name,j) := block(
+    if j < 33 then bock([res, balken, j1, k, k1, n0, n, L, s, x, y, y0, y1],
+        res : [],
+        x : float(1), 
+        for j1 from 1 thru j do block(
+            /* Find the largest value (y0) less than or equal to x */
+            y0 : float(-1),
+            for k from 0 thru last_base_vector do block(
+                y : n_qubit[k,0]*n_qubit[k,0]+n_qubit[k,1]*n_qubit[k,1],
+                if (y <= x) and (y0 < y) then y0 : y
+            ),
+            /* Count the numbern of values in the interval (y0 - gap_prob, y0] */
+            /* Find an element (n0) in the previous interval */
+            n : 0,
+            n0 : -1,
+            y1 : y0 - gap_prob,
+            for k from 0 thru last_base_vector do block(
+                y : n_qubit[k,0]*n_qubit[k,0]+n_qubit[k,1]*n_qubit[k,1],
+                if (y <= y0) and (y1 < y) then (
+                    if n0 = -1 then n0 : k, 
+                    n : n + 1
+                    )
+            ),
+            x : y1,
+            if n > 0 then res : append(res, [[y0,n,n0]])    
+        ),
+        x : 200.0/res[1][1],
+        k : length(res),
+        balken : [],
+        for j1 from 1 thru k do (
+            L : n_qubit_list(res[j1][3]),
+            s : "",
+            for k1 from 1 thru length(L) do s : sconcat(s,string(L[k1])),
+            balken : append(balken,[[color=black,label([s,5*num_qubits,1.5*(k-j1)+1.0])],
+                                                   [color=black,line_type=solid,fill_color=gray60,
+                                                    rectangle([10*num_qubits,1.5*(k-j1)+0.5],[10*num_qubits+x*res[j1][1],1.5*(k-j1+1)])],
+                                                   [color=black,label([string(res[j1][2]),10*num_qubits+210,1.5*(k-j1)+1.0])]])    
+        ),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[0,10*num_qubits+210],yrange=[0,1.5*k+0.5],points_joined=true,
+                                                                               xtics=false,ytics=false,axis_left=false,axis_right=false,
+                                                                               axis_top=false,axis_bottom=false,balken)]]),
+        j1 : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[0,10*num_qubits+210],yrange=[0,1.5*k+0.5],points_joined=true,
+                 xtics=false,ytics=false,axis_left=false,axis_right=false,axis_top=false,axis_bottom=false,balken)
+        else
+        draw(terminal=[wxt,k],graphic_list[length(graphic_list)][2]),
+        system_error : "error: none"
+    )
+    else system_error : "error: no more than 256 bars can be graphically represented",
+    system_error,
+    res
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+N-qubit coordinate bar diagram (maximum 8 qubits - 256 bars)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_coor(name) := block(
+    if num_qubits < 9 then bock([balken, i, z_min, z_max],
+        z_min : float(0),
+        z_max : float(0), 
+        for i from 0 thru last_base_vector do block(
+            if z_max < n_qubit[i,0] then z_max : n_qubit[i,0],
+            if n_qubit[i,0] < z_min then z_min : n_qubit[i,0],
+            if z_max < n_qubit[i,1] then z_max : n_qubit[i,1],
+            if n_qubit[i,1] < z_min then z_min : n_qubit[i,1]
+        ),
+        balken : append(create_list([fill_color=gray60,rectangle([i,0],[i+0.5,n_qubit[i,0]])], i, 0, last_base_vector),
+                                  create_list([fill_color=gray80,rectangle([i+0.5,0],[i+1,n_qubit[i,1]])], i, 0, last_base_vector)),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[0,dim_n_qubit],yrange=[1.1*z_min,1.1*z_max],color=black,line_type=solid,border=true,balken)]]),
+        i : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[0,dim_n_qubit],yrange=[1.1*z_min,1.1*z_max],color=black,line_type=solid,border=true,balken)
+        else 
+        draw2d(terminal=[wxt,i],xrange=[0,dim_n_qubit],yrange=[1.1*z_min,1.1*z_max],color=black,line_type=solid,border=true,balken),
+        system_error : "error: none"
+    ) 
+    else system_error : "error: no more than 8 qubits can be graphically represented",
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Coordinate bars corresponding to the sublist |j0>...|j1> (j1 - j0 <= 256 bars)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_list_coor(name,j0,j1) := block(
+    if j1-j0 < 257 then bock([balken, j, z_min, z_max],
+        x : float(0), 
+        for j from j0 thru j1 do block(
+            if z_max < n_qubit[j,0] then z_max : n_qubit[j,0],
+            if n_qubit[j,0] < z_min then z_min : n_qubit[j,0],
+            if z_max < n_qubit[j,1] then z_max : n_qubit[j,1],
+            if n_qubit[j,1] < z_min then z_min : n_qubit[j,1]
+        ),
+        balken : append(create_list([fill_color=gray60,rectangle([j,0],[j+0.5,n_qubit[j,0]])], j, j0, j1),
+                                  create_list([fill_color=gray80,rectangle([j+0.5,0],[j+1,n_qubit[i,1]])], j, j0, j1)),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[j0,j1+1],yrange=[1.1*z_min,1.1*z_max],color=black,fill_color=gray60,line_type=solid,border=true,balken)]]),
+        j : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[j0,j1+1],yrange=[1.1*z_min,1.1*z_max],color=black,fill_color=gray60,line_type=solid,border=true,balken)
+        else
+        draw2d(terminal=[wxt,j],xrange=[j0,j1+1],yrange=[1.1*z_min,1.1*z_max],color=black,fill_color=gray60,line_type=solid,border=true,balken),
+        system_error : "error: none"
+    )
+    else system_error : "error: no more than 256 coordinates can be graphically represented",
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+N-qubit linear combination (maximum 6 qubits - 64 terms)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw_n_qubit(name) := block(
+    if num_qubits < 7 then bock([balken, k, k1, j, j1, i, L, a_x, b_x, d_a, d_b, d_t],
+        balken : [],
+        if dim_n_qubit < 4 then k1 : 1
+        else k1 : dim_n_qubit/4,
+        a_x : "+ 1.0000 + 0.0000",
+        d_a : 17*15,
+        d_b : (17+4)*30 + (2 + num_qubits)*15,
+        d_t : (17+4)*30 + (2 + num_qubits + 4)*30,
+        for k from 1 thru k1 do (
+            for j from 0 thru 3 do (
+                j1 : 4*(k-1) + j,
+                if j1 < dim_n_qubit then (
+                    L : n_qubit_list(j1),
+                    b_x : "|",
+                    for i from 1 thru num_qubits do b_x : sconcat(b_x,string(L[i])),
+                    b_x : sconcat(b_x,">"),
+                    if j = 0 then balken : append(balken,[[color=white,label(["|",10,4+4*(16-k)])]]),
+                    balken : append(balken,[[color=black,label([a_x,100+d_a+j*d_t,4+4*(16-k)])],
+                                            [color=black,label([b_x,100+d_b+j*d_t,4+4*(16-k)])]]),
+                    if j = 3 then balken : append(balken,[[color=white,label(["|",190+3*d_t,4+4*(16-k)])]])
+                )
+            )
+        ),
+        graphic_list : append(graphic_list,[[name,gr2d(xrange=[0,200+4*d_t],yrange=[0,68],color=black,
+                                                       xtics=false,ytics=false,axis_left=false,axis_right=false,
+                                                       axis_top=false,axis_bottom=false,balken)]]),
+        i : length(graphic_list),
+        if graphic_in_sesion then
+        wxdraw2d(xrange=[0,200+4*d_t],yrange=[0,68],color=black,color=black,
+                 xtics=false,ytics=false,axis_left=false,axis_right=false,axis_top=false,axis_bottom=false,balken)
+        else 
+        draw2d(terminal=[wxt,i],xrange=[0,200+4*d_t],yrange=[0,68],color=black,
+               xtics=false,ytics=false,axis_left=false,axis_right=false,axis_top=false,axis_bottom=false,balken),
+        system_error : "error: none"
+    ) 
+    else system_error : "error: no more than 6-qubits linear combination can be represented",
+    system_error
+)$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.06.6"$

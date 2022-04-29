@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>OpenQSDS_000-quantum_errors</title>
+    <meta name="generator" content="wxMaxima"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/x-mathjax-config">  MathJax.Hub.Config({
+    displayAlign: "left",
+    context: "MathJax",
+    TeX: {TagSide: "left"}
+  })
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async="async">  // A comment that hinders wxWidgets from optimizing this tag too much.
+</script>
+    <link rel="stylesheet" type="text/css" href="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors.css"/>
+  </head>
+  <body>
+    <!-- ****************************************************** -->
+    <!-- *        Created with wxMaxima version 21.05.2       * -->
+    <!-- ****************************************************** -->
+    <noscript>
+      <div class="error message">
+        <p>Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</p>
+      </div>
+    </noscript>
+    <p hidden="hidden">\(      \DeclareMathOperator{\abs}{abs}
+      \newcommand{\ensuremath}[1]{\mbox{$#1$}}
+\)</p>
+    <!-- Section cell -->
+    <div class="section">
+      <p>  1 Load OpenQSDS_000
+</p>
+    </div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_variable">file_search_maxima</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">append</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">file_search_maxima</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_string">"/home/quang/Documents/Master_Quantum_Computing/A13_Master_Thesis/*.wxm"</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">batchload</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"OpenQSDS_000-code"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}"F:/Actual/QuantumExplore/Plataforma/OpenQSDS/OpenQSDS\_ 000/OpenQSDS\_ 000-code.wxm"\]
+</p>
+    <!-- Section cell -->
+    <div class="section">
+      <p>  2 Quantum error section
+</p>
+    </div>
+    <!-- Subsection cell -->
+    <div class="subsect">
+      <p>  2.1 One-qubit errors
+</p>
+    </div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) } &amp; 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\\
+0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) } &amp; \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\end{pmatrix}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">block</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_controlled_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_variable">Err1</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">10</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}0.2185080122244105 \% i+0.9510565162951535 &amp; 0.1545084971874737 \% i-0.1545084971874737\\
+0.1545084971874737 \% i+0.1545084971874737 &amp; 0.9510565162951535-0.2185080122244105 \% i\end{pmatrix}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">apply_1_controlled_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Start"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_4.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">32</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error 1"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_7.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">16</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error 2"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_10.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">8</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error 3"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_13.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error 4"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_16.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error 5"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_19.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">H</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">tensor_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">gate_I</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">H</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}1.0 \left( 0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\right)  &amp; 0.0\\
+0.0 &amp; 1.0 \left( 0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\right) \\
+1.0 \left( 0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\right)  &amp; 0.0\\
+0.0 &amp; 1.0 \left( 0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\right) \end{pmatrix}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_variable">v0</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">matrix</span>
+            <span class="code_operator">(</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">/</span>
+            <span class="code_function">sqrt</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">0</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">0</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">/</span>
+            <span class="code_function">sqrt</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}\frac{1}{\sqrt{2}}\\
+0\\
+0\\
+\frac{1}{\sqrt{2}}\end{pmatrix}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">v</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">H</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">.</span>
+            <span class="code_variable">v0</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\operatorname{v}\left( \theta \right) \operatorname{:=}\operatorname{H}\left( \theta \right) \ensuremath{\mathrm{ . }}\ensuremath{\mathrm{v0}}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">v</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}\frac{1.0 \left( 0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) }\right) }{\sqrt{2}}\\
+\frac{1.0 \left( 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\right) }{\sqrt{2}}\\
+\frac{1.0 \left( 0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) }\right) }{\sqrt{2}}\\
+\frac{1.0 \left( \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\right) }{\sqrt{2}}\end{pmatrix}\]
+</p>
+    <!-- Text cell -->
+    <div class="comment">Fidelity
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">scalar_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">v</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">v0</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}1.0 \cos{\left( \theta \right) }\]
+</p>
+    <!-- Text cell -->
+    <div class="comment">Variance
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">scalar_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">v</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">−</span>
+            <span class="code_variable">v0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_function">v</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">−</span>
+            <span class="code_variable">v0</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}0.9999999999999999 {{\sin{\left( \theta \right) }}^{2}}+1.0 {{\cos{\left( \theta \right) }}^{2}}-2.0 \cos{\left( \theta \right) }+1.0\]
+</p>
+    <!-- Subsection cell -->
+    <div class="subsect">
+      <p>  2.2 Two-qubit errors
+</p>
+    </div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation_two_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">block</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_controlled_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">apply_1_controlled_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">apply_1_controlled_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error_2_qubits 0"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_28.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation_two_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">32</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error_2_qubits 1"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_31.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation_two_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">16</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error_2_qubits 2"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_34.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation_two_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">8</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error_2_qubits 3"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_37.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation_two_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error_2_qubits 4"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_40.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">Error_simulation_two_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Error_2_qubits 5"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors_43.png" width="998" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">H_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">matrix</span>
+            <span class="code_operator">(</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">0</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">.</span>
+            <span class="code_function">tensor_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">gate_I</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">H_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}1.0 \left( 0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\right)  &amp; 0.0\\
+0.0 &amp; 1.0 \left( 0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\right) \\
+0.0 &amp; 1.0 \left( 0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\right) \\
+1.0 \left( 0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) }\right)  &amp; 0.0 &amp; 1.0 \left( \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\right)  &amp; 0.0\end{pmatrix}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">v_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">H_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">.</span>
+            <span class="code_variable">v0</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\operatorname{v\_ 2\_ qubits}\left( \theta \right) \operatorname{:=}\operatorname{H\_ 2\_ qubits}\left( \theta \right) \ensuremath{\mathrm{ . }}\ensuremath{\mathrm{v0}}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">v_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\begin{pmatrix}\frac{1.0 \left( 0.7071067811865475 \% i \sin{\left( \theta \right) }+\cos{\left( \theta \right) }\right) }{\sqrt{2}}\\
+\frac{1.0 \left( 0.5 \% i \sin{\left( \theta \right) }-0.5 \sin{\left( \theta \right) }\right) }{\sqrt{2}}\\
+\frac{1.0 \left( \cos{\left( \theta \right) }-0.7071067811865475 \% i \sin{\left( \theta \right) }\right) }{\sqrt{2}}\\
+\frac{1.0 \left( 0.5 \% i \sin{\left( \theta \right) }+0.5 \sin{\left( \theta \right) }\right) }{\sqrt{2}}\end{pmatrix}\]
+</p>
+    <!-- Text cell -->
+    <div class="comment">Fidelity
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">expand</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">scalar_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">v_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">v0</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">·</span>
+            <span class="code_function">conjugate</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">scalar_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">v_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">v0</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}0.4267766952966369 {{\sin{\left( \theta \right) }}^{2}}+0.25 \cos{\left( \theta \right) } \sin{\left( \theta \right) }+0.25 {{\cos{\left( \theta \right) }}^{2}}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">float</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">.</span>
+            <span class="code_number">4267766952966369</span>
+            <span class="code_operator">−</span>
+            <span class="code_number">0</span>
+            <span class="code_endofline">.</span>
+            <span class="code_number">25</span>
+            <span class="code_operator">−</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">/</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">·</span>
+            <span class="code_function">sqrt</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}1.110223024625157 {{10}^{-16}}\]
+</p>
+    <!-- Text cell -->
+    <div class="comment">Variance
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">scalar_prod</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">v_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">−</span>
+            <span class="code_variable">v0</span>
+            <span class="code_endofline">,</span>
+            <span class="code_function">v_2_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">θ</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">−</span>
+            <span class="code_variable">v0</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}1.0 {{\sin{\left( \theta \right) }}^{2}}-0.5 \sin{\left( \theta \right) }+1.0 {{\cos{\left( \theta \right) }}^{2}}-1.0 \cos{\left( \theta \right) }+1.0\]
+</p>
+    <hr/>
+    <p>
+      <small> Created with 
+        <a href="https://wxMaxima-developers.github.io/wxmaxima/">wxMaxima</a>.</small>
+    </p>
+    <small> The source of this Maxima session can be downloaded 
+      <a href="OpenQSDS_000-quantum_errors_htmlimg/OpenQSDS_000-quantum_errors.wxmx">here</a>.</small>
+  </body>
+</html>

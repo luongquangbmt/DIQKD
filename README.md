@@ -1,8 +1,12 @@
 # DIQKD Thesis
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wikiti/pandoc-book-template/blob/master/LICENSE.md)
-https://www.overleaf.com/project/6225e87cfde1be655696e8f4
+https://www.overleaf.com/4644944989cysckmnyxwjr
 
+# Architecture
+core: Where the core program of OpenQSDS resides
+qw_search: Where the Quantum Walk Search algorithm resides
+qkd: in the future, qkd algorithm will be placed here
 
 # Introduction
 The objective of this project is to build a Quantum Computing simulator in Maxima with the following characteristics:

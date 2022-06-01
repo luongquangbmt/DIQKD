@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>Ekert91</title>
+    <meta name="generator" content="wxMaxima"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/x-mathjax-config">  MathJax.Hub.Config({
+    displayAlign: "left",
+    context: "MathJax",
+    TeX: {TagSide: "left"}
+  })
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async="async">  // A comment that hinders wxWidgets from optimizing this tag too much.
+</script>
+    <link rel="stylesheet" type="text/css" href="Ekert91_htmlimg/Ekert91.css"/>
+  </head>
+  <body>
+    <!-- ****************************************************** -->
+    <!-- *        Created with wxMaxima version 21.05.2       * -->
+    <!-- ****************************************************** -->
+    <noscript>
+      <div class="error message">
+        <p>Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</p>
+      </div>
+    </noscript>
+    <p hidden="hidden">\(      \DeclareMathOperator{\abs}{abs}
+      \newcommand{\ensuremath}[1]{\mbox{$#1$}}
+\)</p>
+    <!-- Title cell -->
+    <div class="title">
+      <p>Quantum Key Distribution
+</p>
+    </div>
+    <!-- Section cell -->
+    <div class="section">
+      <p>  1 Load OpenQSDS_00
+</p>
+    </div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">kill</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">all</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">file_search_maxima</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">append</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">file_search_maxima</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_string">"/home/quang/Documents/Master_Quantum_Computing/A13_Master_Thesis/DIQKD/*.wxm"</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">debugmode</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">true</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\ensuremath{\mathrm{done}}\]
+</p>
+    <p>\[\operatorname{	}\mbox{%default
+true}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">batchload</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"OpenQSDS_000-code"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}"/home/quang/Documents/Master\_ Quantum\_ Computing/A13\_ Master\_ Thesis/DIQKD/OpenQSDS\_ 000-code.wxm"\]
+</p>
+    <!-- Section cell -->
+    <div class="section">
+      <p>  2 Ekert91 Protocol
+</p>
+    </div>
+    <!-- Subsection cell -->
+    <div class="subsect">
+      <p>  2.1 Step 1: The channel source prepares and emits a spin 1/2 particle in sglet states (i.e. a superposition qubits)  
+</p>
+    </div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">apply_1_controlled_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">random</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">360</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">·</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">180</span>
+            <span class="code_endofline">,</span>
+            <span class="code_function">random</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">360</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">·</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">180</span>
+            <span class="code_endofline">,</span>
+            <span class="code_function">random</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">360</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">·</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">180</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">draw_prob</span>
+            <span class="code_operator">(</span>
+            <span class="code_string">"Start"</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}"done"\]
+</p>
+    <p>\[\operatorname{	}"done"\]
+</p>
+    <p>\[\operatorname{	}"done"\]
+</p>
+    <p>\[\operatorname{	}"done"\]
+</p>
+    <p>\[\operatorname{	}"done"\]
+</p>
+    <p>\[\operatorname{	}\]
+</p>
+    <img src="Ekert91_htmlimg/Ekert91_9.png" width="1198" style="max-width:90%;" loading="lazy" alt=" (Graphics) "/>
+    <br/>
+    <p>\[\operatorname{	}"error: none"\]
+</p>
+    <!-- Subsection cell -->
+    <div class="subsect">
+      <p>  2.2 Step 2: 
+</p>
+    </div>
+    <!-- Text cell -->
+    <div class="comment">Allice generate two classical bitstrings a b with length n each.
+      <br/>Step 2 Chaung: Encodes string a based on alice base base_a.
+      <br/>If  base_a=0 means "prepare bits_a in the Z-basis": |0&gt;, |1&gt;, and,
+      <br/>base_a=1 means "prepare in the X-basis":|+&gt;, |-&gt;
+      <br/>X-basis: 00 and 10, Z-basis: 01 and 11
+      <br/>Step 3 chuang: Alice send the quantum registry to Bob over the public quantum communication channel.
+      <br/>At Bob location, Bob will also generate a random bases. Bob possesses the quantum state ψ and base_b.
+      <br/>Step 4: Bob receives the quantum registry and create a random Base_b
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_comment">/* Alice knowledge */</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_comment">/* Generate random bitstring a, base a, base b */</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">n</span>
+            <span class="code_operator">:</span>
+            <span class="code_number">20</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">for</span>
+            <span class="code_variable">k</span>
+            <span class="code_function">from</span>
+            <span class="code_number">1</span>
+            <span class="code_function">thru</span>
+            <span class="code_variable">n</span>
+            <span class="code_function">do</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">bits_a</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">random</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">random</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">base_b</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">random</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">2</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">bits_a</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">listarray</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">bits_a</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">base_a</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">listarray</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">base_b</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">listarray</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_b</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}20\]
+</p>
+    <p>\[\operatorname{	}\ensuremath{\mathrm{done}}\]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\right] \]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}1\right] \]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}0\right] \]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_comment">/* If  base_a=0 means "prepare bits_a in the Z-basis": |0&gt;, |1&gt;, and,</span>
+            <span class="code_comment">
+              <br/>
+            </span>
+            <span class="code_comment">base_a=1 means "prepare in the X-basis":|+&gt;, |-&gt;</span>
+            <span class="code_comment">
+              <br/>
+            </span>
+            <span class="code_comment">X-basis: 00 and 10, Z-basis: 01 and 11*/</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">encode_measure_msg</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">bases</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">bits</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">block</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_variable">bob_result</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">[</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_variable">qc</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">for</span>
+            <span class="code_variable">k</span>
+            <span class="code_function">from</span>
+            <span class="code_number">1</span>
+            <span class="code_function">thru</span>
+            <span class="code_variable">n</span>
+            <span class="code_function">do</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_function">initialize_n_qubit</span>
+            <span class="code_operator">(</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_function">if</span>
+            <span class="code_variable">bases</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">=</span>
+            <span class="code_number">0</span>
+            <span class="code_function">then</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>            
+            <span class="code_function">if</span>
+            <span class="code_variable">bits</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">=</span>
+            <span class="code_number">1</span>
+            <span class="code_function">then</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>                
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>            
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_function">else</span>
+            <span class="code_operator">(</span>
+            <span class="code_comment">/* bases=1 */</span>
+            <span class="code_endofline">
+              <br/>
+            </span>            
+            <span class="code_function">if</span>
+            <span class="code_variable">bits</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">=</span>
+            <span class="code_number">1</span>
+            <span class="code_function">then</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>                
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_X</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>            
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>            
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_comment">/* encode*/</span>
+            <span class="code_endofline">
+              <br/>
+            </span>            
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">gate_H</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_comment">/* measure 1 base*/</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_function">apply_1_qubit_gate</span>
+            <span class="code_operator">(</span>
+            <span class="code_function">gate_Error</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">10</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">%pi</span>
+            <span class="code_operator">/</span>
+            <span class="code_number">4</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_variable">bob_output</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">apply_1_qubit_measure</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">[</span>
+            <span class="code_number">3</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_variable">bob_result</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">append</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">bob_result</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">bob_output</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_variable">bob_result</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_operator">)</span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_variable">bob_results</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">encode_measure_msg</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">bits_a</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">bits_a</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">base_a</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">base_b</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\right] \]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\right] \]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}1\right] \]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}0\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}1\operatorname{,}0\right] \]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input"/>
+        </td>
+      </tr>
+    </table>
+    <!-- Text cell -->
+    <div class="comment">Bob measures the qubits based on different base
+</div>
+    <!-- Text cell -->
+    <div class="comment">Step 4 qiskit, Step 6 chuang: Alcie and Bob check their bases and discard any bits that their bases are different. Inputs are Alice base, Bob base, and bit string. Return a string of  good bits which are Alice key and Bob key. The are at least 2n good bits left, otherwise the protocol is aborted.
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">discard_bad_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">base_b</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">bits</span>
+            <span class="code_operator">)</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">block</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">good_bits</span>
+            <span class="code_operator">:</span>
+            <span class="code_operator">[</span>
+            <span class="code_operator">]</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">n</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">length</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_function">for</span>
+            <span class="code_variable">k</span>
+            <span class="code_function">from</span>
+            <span class="code_number">1</span>
+            <span class="code_function">thru</span>
+            <span class="code_variable">n</span>
+            <span class="code_function">do</span>
+            <span class="code_operator">(</span>
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_function">if</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">=</span>
+            <span class="code_variable">base_b</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_function">then</span>
+            <span class="code_endofline">
+              <br/>
+            </span>        
+            <span class="code_variable">good_bits</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">append</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">good_bits</span>
+            <span class="code_endofline">,</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">bits</span>
+            <span class="code_operator">[</span>
+            <span class="code_variable">k</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">]</span>
+            <span class="code_operator">)</span>    
+            <span class="code_endofline">
+              <br/>
+            </span>    
+            <span class="code_operator">)</span>
+            <span class="code_endofline">,</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">good_bits</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_endofline">$</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_variable">alice_key</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">discard_bad_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">base_b</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">bits_a</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_variable">bob_key</span>
+            <span class="code_operator">:</span>
+            <span class="code_function">discard_bad_qubits</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">base_a</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">base_b</span>
+            <span class="code_endofline">,</span>
+            <span class="code_variable">bob_results</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\right] \]
+</p>
+    <p>\[\operatorname{	}\left[ 0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}0\operatorname{,}1\right] \]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <!-- Text cell -->
+    <div class="comment">Step 5 qiskit, step  7 chuang. Create ar random sample string with arbitrary length to serve as the check string.
+      <br/>Key Unification
+      <br/>Privacy amplification
+</div>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_number">0</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}0\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_variable">qc</span>
+            <span class="code_operator">=</span>
+            <span class="code_function">start_simulator</span>
+            <span class="code_operator">(</span>
+            <span class="code_number">1</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+            <span class="code_endofline">
+              <br/>
+            </span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\ensuremath{\mathrm{qc}}="done"\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">kill</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">all</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\ensuremath{\mathrm{done}}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">kill</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">all</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\ensuremath{\mathrm{done}}\]
+</p>
+    <!-- Code cell -->
+    <table>
+      <tr>
+        <td>
+          <span class="prompt"> --&gt;	
+  </span>
+        </td>
+        <td>
+          <span class="input">
+            <span class="code_function">kill</span>
+            <span class="code_operator">(</span>
+            <span class="code_variable">all</span>
+            <span class="code_operator">)</span>
+            <span class="code_endofline">;</span>
+          </span>
+        </td>
+      </tr>
+    </table>
+    <p>\[\operatorname{	}\ensuremath{\mathrm{done}}\]
+</p>
+    <hr/>
+    <p>
+      <small> Created with 
+        <a href="https://wxMaxima-developers.github.io/wxmaxima/">wxMaxima</a>.</small>
+    </p>
+    <small> The source of this Maxima session can be downloaded 
+      <a href="Ekert91_htmlimg/Ekert91.wxmx">here</a>.</small>
+  </body>
+</html>

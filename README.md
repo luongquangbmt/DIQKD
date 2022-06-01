@@ -5,7 +5,9 @@ https://www.overleaf.com/4644944989cysckmnyxwjr
 
 # Architecture
 core: Where the core program of OpenQSDS resides
+
 qw_search: Where the Quantum Walk Search algorithm resides
+
 qkd: in the future, qkd algorithm will be placed here
 
 # Introduction

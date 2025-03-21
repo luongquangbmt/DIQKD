@@ -1,4 +1,4 @@
-# DIQKD Thesis
+# DIQKD
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wikiti/pandoc-book-template/blob/master/LICENSE.md)
 https://www.overleaf.com/4644944989cysckmnyxwjr
